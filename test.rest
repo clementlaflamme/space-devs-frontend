@@ -1,0 +1,38 @@
+@base= http://localhost:3000
+
+
+
+
+POST {{base}}/auth/register
+Content-Type: application/json
+
+{
+    "email" : "eddine@nasa.ca", 
+    "pseudo":"eddine123",
+    "password":"apollo123"
+}
+
+###
+# @name login
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{
+    "email":"eddine@nasa.ca",
+    "password":"apollo123"
+}
+
+
+###
+GET {{base}}/auth/me 
+Authorization: Bearer {{login.response.body.token}}
+
+###
+POST {{base}}/lancement/importer
+Content-Type:  application/json 
+Authorization: Bearer {{login.response.body.token}}
+
+
+
+###
+GET {{base}}/lancement

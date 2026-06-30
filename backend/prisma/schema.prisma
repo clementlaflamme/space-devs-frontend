@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Statut{
+  A_VENIR
+  SUCCES
+  ECHEC
+  REPORTE
+}
+
+// ------ MODELES ---
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  pseudo        String             
+  password      String                         // HASH bcrypt
+  role          Role           @default(USER)
+  createdAt     DateTime       @default(now())
+  suivis        Suivi[]
+  commentaires  Commentaire[]
+}
+
+model Lancement {
+  id            Int            @id @default(autoincrement())
+  ref           String         @unique          // id externe (Space Devs) -> anti-doublon
+  nom           String
+  agence        String?
+  fusee         String?
+  mission       String?
+  lieu          String?
+  imageUrl      String?
+  dateLancement DateTime?
+  statut        Statut         @default(A_VENIR)
+  createdAt     DateTime       @default(now())
+  suivis        Suivi[]
+  commentaires  Commentaire[]
+}
+
+// Liste de suivi : un User <-> un Lancement (N-N enrichie)
+model Suivi {
+  id           Int        @id @default(autoincrement())
+  rappel       Boolean    @default(false)       // veut un rappel avant le décollage ?
+  userId       Int
+  lancementId  Int
+  user         User       @relation(fields: [userId], references: [id])
+  lancement    Lancement  @relation(fields: [lancementId], references: [id])
+
+  @@unique([userId, lancementId])               // on ne suit un lancement qu'une fois
+}
+
+model Commentaire {
+  id           Int        @id @default(autoincrement())
+  contenu      String
+  createdAt    DateTime   @default(now())
+  userId       Int
+  lancementId  Int
+  user         User       @relation(fields: [userId], references: [id])
+  lancement    Lancement  @relation(fields: [lancementId], references: [id])
+}
