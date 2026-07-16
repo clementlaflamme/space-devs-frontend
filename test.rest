@@ -30,7 +30,8 @@ Authorization: Bearer {{login.response.body.token}}
 ###
 POST {{base}}/lancement/importer
 Content-Type:  application/json 
-Authorization: Bearer {{login.response.body.token}}
+
+{"limite": 10}
 
 
 
