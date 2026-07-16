@@ -114,11 +114,11 @@ function App() {
               <div>
                 <h3 style={{ color: "white" }}>{l.nom}</h3>
                 <h4 style={{ color: "white" }}>
-                  {l.launch_service_provider?.name} -{" "}
-                  {l.rocket?.configuration?.name}
+                  {l.agence} -{" "}
+                  {l.fusee}
                 </h4>
                 <h5 style={{ color: "white" }}>
-                  {l.pad?.location?.name} le {l.net}
+                  {l.lieu} le {l.dateLancement.replace("T", " | ").slice(0, 18) + " UTC"}
                 </h5>
                 <div style={{ display: "flex", gap: "8px", marginTop: "auto" }}>
                   <div
