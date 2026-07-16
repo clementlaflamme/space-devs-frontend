@@ -16,10 +16,12 @@ function App() {
     statut: string;
   };
 
-  const back = axios.create({
-    baseURL: "http://localhost:3000",
-    timeout: 5000,
-  });
+  
+  const [chargement, setChargement] = useState(true)
+  const [erreur, setErreur] = useState("")
+  const [limite, setLimite] = useState("");
+
+  const [lancements, setLancements] = useState<any []>([])
 
   const [listeLancements, setListeLancements] = useState<Lancement[]>([]);
   const [msgErreur, setMsgErreur] = useState("");
@@ -62,7 +64,10 @@ function App() {
   return (
     <div>
       <h1>Launchpad</h1>
-
+      <div>
+        <button onClick={() => importer(limite)}>Importer</button>
+        <input id='inputLimite' placeholder="# lancements a importer" onChange={(e) => setLimite(e.target.value)}></input>
+      </div>
       <h2>Lancements</h2>
       <h2>Liste de Lancements ({listeLancements.length})</h2>
       <ul>
