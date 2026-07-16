@@ -111,7 +111,9 @@ function App() {
                 margin: "10px"
               }}
             >
-              <img src={l.imageUrl} style={{ borderRadius: "12px" }} />
+              <img src={l.imageUrl} style={{ borderRadius: "12px" }} alt={l.nom} onError={(e) => {
+    e.currentTarget.style.display = 'none';
+    }}/>
               <div>
                 <h3 style={{ color: "white" }}>{l.nom}</h3>
                 <h4 style={{ color: "white" }}>
@@ -136,7 +138,7 @@ function App() {
                       fontWeight: "bold",
                     }}
                   >
-                    STATUT
+                    {l.statut}
                   </div>
                   <div
                     style={{
