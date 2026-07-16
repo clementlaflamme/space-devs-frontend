@@ -9,6 +9,7 @@ function App() {
   
   const [chargement, setChargement] = useState(true)
   const [erreur, setErreur] = useState("")
+  const [limite, setLimite] = useState("");
 
   const [lancements, setLancements] = useState<any []>([])
 
@@ -41,8 +42,10 @@ function App() {
   return (
     <div>
       <h1>Launchpad</h1>
-      
-      
+      <div>
+        <button onClick={() => importer(limite)}>Importer</button>
+        <input id='inputLimite' placeholder="# lancements a importer" onChange={(e) => setLimite(e.target.value)}></input>
+      </div>
       <h2>Lancements</h2>
       <h2>Liste de Lancements ({lancements.length})</h2>
       <ul>
