@@ -23,9 +23,33 @@ function App() {
 
   const [listeLancements, setListeLancements] = useState<Lancement[]>([]);
   const [msgErreur, setMsgErreur] = useState("");
+  const [limite, setLimite] = useState("");
 
-  async function recupererListeLancements() {
-    let reponse = await back.post("/lancement/importer", { limite: 10 });
+  const [maintenant, setMaintenant] = useState(Date.now())
+  useEffect(() => {
+    const interval = setInterval(()=>{
+      setMaintenant(Date.now())}, 1000)
+  })
+
+  function calculerDecompte(dateLancement: string) {
+    const maintenant = new Date().getTime()
+    const lancement = new Date(dateLancement).getTime()
+
+    const diff = lancement - maintenant
+    if (diff <= 0) return "Lancement effectué"
+
+    const jours = Math.floor(diff / (1000 * 60 * 60 * 24))
+    const heures = Math.floor((diff / (1000 * 60 * 60)) % 24)
+    const minutes = Math.floor((diff / (1000 * 60)) % 60)
+    const secondes = Math.floor((diff / 1000) % 60)
+
+  return `${jours}j ${heures}h ${minutes}m ${secondes}s`
+}
+
+
+
+  async function recupererListeLancements(limiteLancements: string) {
+    let reponse = await back.post("/lancement/importer", { limite: limiteLancements });
     if (reponse.status !== 201) {
       setMsgErreur("Erreur lors de la récupération des lancements de l'API.");
       console.error(reponse.data.error);
@@ -56,12 +80,16 @@ function App() {
   }
 
   useEffect(() => {
-    recupererListeLancements();
+    recupererListeLancements("10");
   }, []);
 
   return (
     <div>
       <h1>Launchpad</h1>
+      <div>
+        <button onClick={() => recupererListeLancements(limite)}>Importer</button>
+        <input id='inputLimite' placeholder="# lancements a importer" onChange={(e) => setLimite(e.target.value)}></input>
+      </div>
       <h2>Lancements</h2>
       <h2>Liste de Lancements ({listeLancements.length})</h2>
       <p>{msgErreur}</p>
@@ -87,11 +115,11 @@ function App() {
               <div>
                 <h3 style={{ color: "white" }}>{l.nom}</h3>
                 <h4 style={{ color: "white" }}>
-                  {l.launch_service_provider?.name} -{" "}
-                  {l.rocket?.configuration?.name}
+                  {l.agence} -{" "}
+                  {l.fusee}
                 </h4>
                 <h5 style={{ color: "white" }}>
-                  {l.pad?.location?.name} le {l.net}
+                  {l.lieu} le {l.dateLancement.replace("T", " | ").slice(0, 18) + " UTC"}
                 </h5>
                 <div style={{ display: "flex", gap: "8px", marginTop: "auto" }}>
                   <div
@@ -124,7 +152,7 @@ function App() {
                       flexGrow: "1",
                     }}
                   >
-                    DECOMPTE
+                    {calculerDecompte(l.dateLancement)}
                   </div>
                 </div>
               </div>
