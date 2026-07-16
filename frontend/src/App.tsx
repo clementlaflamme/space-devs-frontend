@@ -100,7 +100,7 @@ function App() {
               style={{
                 width: "18rem",
                 background:
-                  "linearGradient(15deg,rgba(42, 26, 122, 1) 0%, rgba(0, 0, 0, 1) 100%)",
+                  "linear-gradient(15deg,rgb(33, 20, 99) 0%, rgba(0, 0, 0, 1) 100%)",
                 borderRadius: "12px",
                 border: "solid 3px rgb(193, 163, 211)",
                 borderWidth: "4px",
