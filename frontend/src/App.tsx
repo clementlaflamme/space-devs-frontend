@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
     axios.get(`${API}/lancements`)
-    .then((res)=> setLancements(res.data))
+    .then((res)=> setLancements(res.data.lancements))
     .catch(() => setErreur("Impossible de communiquer avec l'API"))
     .finally(() => setChargement(false))
   }, [])
@@ -31,7 +31,7 @@ function App() {
 
   function chargerImport() {
     axios.get(`${API}/lancements`)
-    .then((res) => setLancements(res.data))
+    .then((res) => setLancements(res.data.lancements))
   }
 
   useEffect (() => {
