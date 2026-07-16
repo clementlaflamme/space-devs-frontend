@@ -65,9 +65,9 @@ function App() {
       <h2>Lancements</h2>
       <h2>Liste de Lancements ({listeLancements.length})</h2>
       <p>{msgErreur}</p>
-      <ul>
+      <div style={{display: 'flex', flexWrap: 'wrap'}}>
         {listeLancements.map((l: any) => (
-          <li>
+          
             <div
               style={{
                 width: "18rem",
@@ -80,6 +80,7 @@ function App() {
                 display: "flex",
                 flexDirection: "column",
                 minHeight: "450px",
+                margin: "10px"
               }}
             >
               <img src={l.imageUrl} style={{ borderRadius: "12px" }} />
@@ -128,9 +129,9 @@ function App() {
                 </div>
               </div>
             </div>
-          </li>
+          
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
